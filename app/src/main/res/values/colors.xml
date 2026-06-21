@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- === PALETA CALIDA — sin cansancio visual === -->
+
+    <!-- Fondos oscuros cálidos -->
+    <color name="bg_dark">#1F1A16</color>           <!-- Cacao oscuro: fondo principal -->
+    <color name="bg_surface">#2C241E</color>         <!-- Chocolate cálido: cards/inputs -->
+    <color name="bg_surface_2">#3A2E26</color>       <!-- Chocolate medio: dialogs -->
+    <color name="bg_elevated">#4A3C32</color>        <!-- Café con leche oscuro -->
+
+    <!-- Acentos cálidos -->
+    <color name="accent_amber">#D97706</color>       <!-- Ámbar principal -->
+    <color name="accent_amber_dark">#B45309</color>  <!-- Ámbar oscuro (variant) -->
+    <color name="accent_orange">#F97316</color>      <!-- Naranja fuego (FAB, botones) -->
+    <color name="accent_orange_soft">#EA7038</color> <!-- Naranja suave -->
+    <color name="accent_rose">#E76D4F</color>        <!-- Rosa tierra (secondary) -->
+    <color name="accent_gold">#EAB308</color>        <!-- Dorado (rating, chips) -->
+
+    <!-- Textos cálidos -->
+    <color name="text_primary">#F5F5F0</color>       <!-- Blanco cálido -->
+    <color name="text_secondary">#C4B5A8</color>     <!-- Gris arena -->
+    <color name="text_hint">#8A7A6E</color>          <!-- Gris café -->
+    <color name="text_on_accent">#FFFFFF</color>     <!-- Texto sobre botones -->
+
+    <!-- Iconos -->
+    <color name="icon_default">#D4C5B8</color>       <!-- Icono normal -->
+    <color name="icon_active">#F97316</color>        <!-- Icono seleccionado (naranja) -->
+
+    <!-- Bordes y divisores -->
+    <color name="divider">#3A2E26</color>
+    <color name="border_soft">#4A3C32</color>
+
+    <!-- Estados funcionales -->
+    <color name="color_pendiente">#F97316</color>    <!-- Naranja para PENDIENTE -->
+    <color name="color_pagado">#22C55E</color>       <!-- Verde para PAGADO -->
+    <color name="color_atrasado">#EF4444</color>     <!-- Rojo para ATRASADO -->
+    <color name="color_alerta">#FACC15</color>       <!-- Amarillo para alertas -->
+
+    <!-- Heredados para compatibilidad -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

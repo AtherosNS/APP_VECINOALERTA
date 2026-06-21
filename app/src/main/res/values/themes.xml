@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme — Paleta Cálida VecinoAlerta -->
+    <style name="Theme.VecinoAlerta" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary: Ámbar cálido -->
+        <item name="colorPrimary">@color/accent_amber</item>
+        <item name="colorPrimaryVariant">@color/accent_amber_dark</item>
+        <item name="colorOnPrimary">@color/text_on_accent</item>
+        <!-- Secondary: Naranja fuego -->
+        <item name="colorSecondary">@color/accent_orange</item>
+        <item name="colorSecondaryVariant">@color/accent_orange_soft</item>
+        <item name="colorOnSecondary">@color/text_on_accent</item>
+        <!-- Background: Cacao oscuro -->
+        <item name="android:colorBackground">@color/bg_dark</item>
+        <item name="colorSurface">@color/bg_surface</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@color/bg_surface</item>
+        <!-- EditText cursor -->
+        <item name="colorControlActivated">@color/accent_amber</item>
+        <item name="colorControlHighlight">#30D97706</item>
+    </style>
+
+    <!-- Urgent alerts theme for panic button -->
+    <style name="Theme.VecinoAlerta.Panico" parent="Theme.VecinoAlerta">
+        <item name="colorPrimary">#EF4444</item>
+        <item name="colorPrimaryVariant">#DC2626</item>
+        <item name="android:statusBarColor">#1E1B1B</item>
+    </style>
+
+    <!-- BottomNavigationView warm style -->
+    <style name="Widget.VecinoAlerta.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/bg_surface</item>
+        <item name="itemIconTint">@drawable/selector_nav_icon</item>
+        <item name="itemTextColor">@drawable/selector_nav_text</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <!-- Card style cálido -->
+    <style name="Widget.VecinoAlerta.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/bg_surface</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="strokeColor">@color/border_soft</item>
+        <item name="strokeWidth">0.5dp</item>
+    </style>
+
+    <!-- Button primario cálido -->
+    <style name="Widget.VecinoAlerta.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/accent_amber</item>
+        <item name="android:textColor">@color/text_on_accent</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <!-- Button naranja para acciones FAB -->
+    <style name="Widget.VecinoAlerta.Button.Orange" parent="Widget.VecinoAlerta.Button">
+        <item name="backgroundTint">@color/accent_orange</item>
+    </style>
+</resources>

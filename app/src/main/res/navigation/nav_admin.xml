@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/dest_admin_home">
+
+    <fragment
+        android:id="@+id/dest_admin_home"
+        android:name="com.upn.app_vecinoalerta.ui.admin.AdminHomeFragment"
+        android:label="Inicio Admin"
+        tools:layout="@layout/fragment_admin_home">
+        <action
+            android:id="@+id/action_to_admin_home"
+            app:destination="@id/dest_admin_home"
+            app:popUpTo="@id/dest_admin_home"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_aprobaciones"
+        android:name="com.upn.app_vecinoalerta.ui.admin.AprobacionUsuariosFragment"
+        android:label="Aprobaciones"
+        tools:layout="@layout/fragment_aprobacion_usuarios" />
+
+    <fragment
+        android:id="@+id/dest_cobros"
+        android:name="com.upn.app_vecinoalerta.ui.admin.CobrosEfectivoFragment"
+        android:label="Cobros"
+        tools:layout="@layout/fragment_cobros_efectivo" />
+
+    <fragment
+        android:id="@+id/dest_crear_cargo"
+        android:name="com.upn.app_vecinoalerta.ui.admin.CrearCargoFragment"
+        android:label="Crear Cargo"
+        tools:layout="@layout/fragment_crear_cargo" />
+
+    <fragment
+        android:id="@+id/dest_gestion_incidencias"
+        android:name="com.upn.app_vecinoalerta.ui.admin.GestionIndicidenciasFragment"
+        android:label="Incidencias"
+        tools:layout="@layout/fragment_gestion_incidencias" />
+
+    <fragment
+        android:id="@+id/dest_mural_admin"
+        android:name="com.upn.app_vecinoalerta.ui.mural.MuralFragment"
+        android:label="Mural"
+        tools:layout="@layout/fragment_mural" />
+
+    <fragment
+        android:id="@+id/dest_chat_admin"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatSelectorFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat_selector">
+        <action
+            android:id="@+id/action_chat_to_grupal"
+            app:destination="@id/dest_chat_grupal_admin" />
+        <action
+            android:id="@+id/action_chat_to_privado_admin"
+            app:destination="@id/dest_chat_privado_admin" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_chat_grupal_admin"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatGrupalFragment"
+        android:label="Chat Vecinal"
+        tools:layout="@layout/fragment_chat_grupal" />
+
+    <fragment
+        android:id="@+id/dest_chat_privado_admin"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatPrivadoFragment"
+        android:label="Chat con Residente"
+        tools:layout="@layout/fragment_chat_privado" />
+
+    <fragment
+        android:id="@+id/dest_asambleas"
+        android:name="com.upn.app_vecinoalerta.ui.asambleas.AsambleasFragment"
+        android:label="Asambleas"
+        tools:layout="@layout/fragment_asambleas" />
+
+    <fragment
+        android:id="@+id/dest_encuestas"
+        android:name="com.upn.app_vecinoalerta.ui.encuestas.EncuestasFragment"
+        android:label="Encuestas"
+        tools:layout="@layout/fragment_encuestas" />
+
+    <fragment
+        android:id="@+id/dest_nueva_asamblea"
+        android:name="com.upn.app_vecinoalerta.ui.asambleas.NuevaAsambleaFragment"
+        android:label="Nueva Asamblea"
+        tools:layout="@layout/fragment_nueva_asamblea" />
+
+    <fragment
+        android:id="@+id/dest_votar"
+        android:name="com.upn.app_vecinoalerta.ui.encuestas.VotarFragment"
+        android:label="Votación"
+        tools:layout="@layout/fragment_votar" />
+
+    <fragment
+        android:id="@+id/dest_reglamento"
+        android:name="com.upn.app_vecinoalerta.ui.reglamento.ReglamentoFragment"
+        android:label="Reglamento"
+        tools:layout="@layout/fragment_reglamento" />
+
+</navigation>
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_propietario"
+    app:startDestination="@id/dest_mural">
+
+    <fragment
+        android:id="@+id/dest_mural"
+        android:name="com.upn.app_vecinoalerta.ui.mural.MuralFragment"
+        android:label="Mural"
+        tools:layout="@layout/fragment_mural">
+        <action
+            android:id="@+id/action_to_mural"
+            app:destination="@id/dest_mural"
+            app:popUpTo="@id/dest_mural"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_chat"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatSelectorFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat_selector">
+        <action
+            android:id="@+id/action_chat_to_grupal"
+            app:destination="@id/dest_chat_grupal" />
+        <action
+            android:id="@+id/action_chat_to_privado_admin"
+            app:destination="@id/dest_chat_privado" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_chat_grupal"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatGrupalFragment"
+        android:label="Chat Vecinal"
+        tools:layout="@layout/fragment_chat_grupal" />
+
+    <fragment
+        android:id="@+id/dest_chat_privado"
+        android:name="com.upn.app_vecinoalerta.ui.chat.ChatPrivadoFragment"
+        android:label="Contactar Admin"
+        tools:layout="@layout/fragment_chat_privado" />
+
+    <fragment
+        android:id="@+id/dest_nueva_incidencia"
+        android:name="com.upn.app_vecinoalerta.ui.incidencias.NuevaIncidenciaFragment"
+        android:label="Nueva Incidencia"
+        tools:layout="@layout/fragment_nueva_incidencia" />
+
+    <fragment
+        android:id="@+id/dest_estado_cuenta"
+        android:name="com.upn.app_vecinoalerta.ui.financiero.EstadoCuentaFragment"
+        android:label="Estado de Cuenta"
+        tools:layout="@layout/fragment_estado_cuenta">
+        <action
+            android:id="@+id/action_estadoCuenta_to_pasarelaPagos"
+            app:destination="@id/dest_pasarela_pagos" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_pasarela_pagos"
+        android:name="com.upn.app_vecinoalerta.ui.financiero.PasarelaPagosFragment"
+        android:label="Pasarela de Pagos"
+        tools:layout="@layout/fragment_pasarela_pagos">
+        <argument
+            android:name="idCargo"
+            app:argType="integer" />
+        <argument
+            android:name="monto"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_reglamento"
+        android:name="com.upn.app_vecinoalerta.ui.reglamento.ReglamentoFragment"
+        android:label="Reglamento"
+        tools:layout="@layout/fragment_reglamento" />
+
+    <fragment
+        android:id="@+id/dest_encuestas"
+        android:name="com.upn.app_vecinoalerta.ui.encuestas.EncuestasFragment"
+        android:label="Encuestas"
+        tools:layout="@layout/fragment_encuestas" />
+
+    <fragment
+        android:id="@+id/dest_votar"
+        android:name="com.upn.app_vecinoalerta.ui.encuestas.VotarFragment"
+        android:label="Votación"
+        tools:layout="@layout/fragment_votar" />
+
+</navigation>
