@@ -39,15 +39,16 @@ class ChatPrivadoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion = requireActivity().getSharedPreferences("sesion", 0)
-        val idEmisor = sesion.getInt("id_usuario", -1)
-        val nombreEmisor = sesion.getString("nombre", "Usuario") ?: "Usuario"
-        val rolEmisor = sesion.getString("rol", "RESIDENTE") ?: "RESIDENTE"
+        val idEmisor = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
+        val nombreEmisor = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(requireContext(), "nombre", "Usuario") ?: "Usuario"
+        val rolEmisor = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(requireContext(), "rol", "RESIDENTE") ?: "RESIDENTE"
 
         // Leer receptor desde argumentos si existe
         arguments?.let {
             idReceptor = it.getInt("id_receptor", 1)
         }
+
+        viewModel.inicializarSincronizacion(idEmisor)
 
         binding.rvMensajesPrivados.layoutManager = LinearLayoutManager(requireContext()).apply {
             stackFromEnd = true
@@ -86,19 +87,27 @@ class ChatPrivadoFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val density = parent.context.resources.displayMetrics.density
+            val pad16 = (16 * density).toInt()
+            val pad12 = (12 * density).toInt()
+            val pad8 = (8 * density).toInt()
+            val pad24 = (24 * density).toInt()
+
             val layout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.HORIZONTAL
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                setPadding(32, 8, 32, 8)
+                setPadding(pad24, pad8, pad24, pad8)
             }
             val t1 = TextView(parent.context).apply {
                 id = android.R.id.text1
-                setTextColor(android.graphics.Color.WHITE)
                 textSize = 15f
-                setPadding(16, 12, 16, 12)
+                setPadding(pad16, pad12, pad16, pad12)
+                // Max width dynamic: 75% of screen
+                val displayMetrics = parent.context.resources.displayMetrics
+                maxWidth = (displayMetrics.widthPixels * 0.75).toInt()
             }
             layout.addView(t1)
             return ViewHolder(layout)
@@ -110,10 +119,12 @@ class ChatPrivadoFragment : Fragment() {
             val layout = holder.itemView as android.widget.LinearLayout
             if (item.idEmisor == currentUserId) {
                 layout.gravity = android.view.Gravity.END
-                holder.tvTexto.setBackgroundResource(android.R.color.holo_blue_dark)
+                holder.tvTexto.setTextColor(android.graphics.Color.WHITE)
+                holder.tvTexto.setBackgroundResource(R.drawable.bg_bubble_sent)
             } else {
                 layout.gravity = android.view.Gravity.START
-                holder.tvTexto.setBackgroundResource(android.R.color.darker_gray)
+                holder.tvTexto.setTextColor(android.graphics.Color.parseColor("#1F2937"))
+                holder.tvTexto.setBackgroundResource(R.drawable.bg_bubble_received)
             }
         }
 

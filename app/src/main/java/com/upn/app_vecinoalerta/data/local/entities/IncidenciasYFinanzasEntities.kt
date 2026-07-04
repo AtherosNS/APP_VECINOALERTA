@@ -31,7 +31,9 @@ data class IncidenciaEntity(
     @ColumnInfo(name = "created_at")       val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at")       val updatedAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "sync_version", defaultValue = "1")
-    val syncVersion: Long = 1L
+    val syncVersion: Long = 1L,
+    @ColumnInfo(name = "sync_pendiente", defaultValue = "1")
+    val syncPendiente: Boolean = true
 )
 
 @Entity(

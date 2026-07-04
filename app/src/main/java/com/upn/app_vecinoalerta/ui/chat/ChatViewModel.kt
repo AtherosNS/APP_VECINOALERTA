@@ -19,6 +19,11 @@ class ChatViewModel @Inject constructor(
     private val repo: ChatRepository
 ) : ViewModel() {
 
+    fun inicializarSincronizacion(currentUserId: Int) {
+        repo.iniciarEscuchadorGrupal()
+        repo.iniciarEscuchadoresPrivados(currentUserId)
+    }
+
     // ── Chat Grupal ────────────────────────────────────────────────
 
     val mensajesGrupales: StateFlow<List<MensajeGrupalEntity>> = repo

@@ -44,8 +44,7 @@ class CrearCargoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion = requireActivity().getSharedPreferences("sesion", 0)
-        val idAdmin = sesion.getInt("id_usuario", -1)
+        val idAdmin = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
 
         binding.cbTodosInmuebles.setOnCheckedChangeListener { _, isChecked ->
             binding.spinnerInmuebles.isEnabled = !isChecked

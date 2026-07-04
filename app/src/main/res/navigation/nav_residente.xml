@@ -79,10 +79,22 @@
         tools:layout="@layout/fragment_reglamento" />
 
     <fragment
+        android:id="@+id/dest_asambleas"
+        android:name="com.upn.app_vecinoalerta.ui.asambleas.AsambleasFragment"
+        android:label="Asambleas"
+        tools:layout="@layout/fragment_asambleas" />
+
+    <fragment
         android:id="@+id/dest_encuestas"
         android:name="com.upn.app_vecinoalerta.ui.encuestas.EncuestasFragment"
         android:label="Encuestas"
         tools:layout="@layout/fragment_encuestas" />
+
+    <fragment
+        android:id="@+id/dest_perfil"
+        android:name="com.upn.app_vecinoalerta.ui.profile.PerfilFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/fragment_perfil" />
 
     <fragment
         android:id="@+id/dest_votar"

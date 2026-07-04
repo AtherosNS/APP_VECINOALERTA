@@ -62,4 +62,11 @@
     <style name="Widget.VecinoAlerta.Button.Orange" parent="Widget.VecinoAlerta.Button">
         <item name="backgroundTint">@color/accent_orange</item>
     </style>
+
+    <!-- Estilo para diálogos claros en la pasarela de pagos -->
+    <style name="Theme.VecinoAlerta.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/accent_amber</item>
+        <item name="colorAccent">@color/accent_amber</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

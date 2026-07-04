@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva Encuesta / Votación"
+            android:textColor="#1F2937"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Input Pregunta -->
+        <EditText
+            android:id="@+id/etPregunta"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Pregunta o tema a votar"
+            android:textColorHint="#9CA3AF"
+            android:textColor="#1F2937"
+            android:textSize="15sp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Opciones de respuesta:"
+            android:textColor="#4B5563"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Contenedor dinámico de opciones -->
+        <LinearLayout
+            android:id="@+id/layoutOpciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Botón Agregar Opción -->
+        <Button
+            android:id="@+id/btnAgregarOpcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Agregar Opción"
+            android:textColor="#D97706"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

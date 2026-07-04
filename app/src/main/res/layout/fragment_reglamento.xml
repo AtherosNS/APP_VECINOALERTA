@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1F2C"
+    android:background="#F9FAFB"
     android:padding="16dp">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reglamento Interno"
-        android:textColor="#FFFFFF"
+        android:textColor="#1F2937"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +31,7 @@
             android:id="@+id/tvReglamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#E2E8F0"
+            android:textColor="#1F2937"
             android:textSize="15sp"
             android:lineSpacingExtra="4dp"
             android:fontFamily="monospace"

@@ -55,8 +55,23 @@ class RegistroViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = RegistroUiState.Cargando
             try {
-                val userId = usuarioRepo.registrar(nombre.trim(), apellido.trim(), dni.trim(),
-                    correo.trim(), usuario.trim(), password, rol, idInmueble)
+                val finalDireccion = if (rol == "RESIDENTE" && idInmueble != null) {
+                    inmuebleRepo.obtenerPorId(idInmueble)?.direccion ?: ""
+                } else {
+                    direccion ?: ""
+                }
+
+                val userId = usuarioRepo.registrarOnline(
+                    nombre = nombre.trim(),
+                    apellido = apellido.trim(),
+                    dni = dni.trim(),
+                    correo = correo.trim(),
+                    usuario = usuario.trim(),
+                    password = password,
+                    rol = rol,
+                    idInmueble = idInmueble,
+                    blockLot = finalDireccion
+                )
                 
                 if (rol == "PROPIETARIO" && !direccion.isNullOrBlank()) {
                     inmuebleRepo.registrar(direccion.trim(), "Propiedad de ${nombre.trim()} ${apellido.trim()}", userId.toInt())
@@ -66,11 +81,12 @@ class RegistroViewModel @Inject constructor(
             } catch (e: Exception) {
                 val msg = when {
                     e.message?.contains("UNIQUE") == true -> "DNI, correo o usuario ya registrado"
-                    else -> "Error al registrar. Intenta de nuevo"
+                    else -> e.localizedMessage ?: "Error al registrar. Intenta de nuevo"
                 }
                 _uiState.value = RegistroUiState.Error(msg)
             }
         }
+
     }
 
     fun resetState() { _uiState.value = RegistroUiState.Idle }

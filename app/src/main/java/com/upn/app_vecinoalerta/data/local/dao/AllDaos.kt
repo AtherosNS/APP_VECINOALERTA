@@ -24,12 +24,24 @@ interface UsuarioDao {
     @Query("UPDATE usuarios SET estado='ACTIVO', updated_at=:ts, sync_version=sync_version+1 WHERE id_usuario=:id AND estado='PENDIENTE'")
     suspend fun aprobar(id: Int, ts: Long = System.currentTimeMillis())
 
-    /** RF-03: login — solo usuarios ACTIVOS. */
-    @Query("SELECT * FROM usuarios WHERE usuario=:usuario AND estado='ACTIVO' LIMIT 1")
-    suspend fun buscarActivoPorUsuario(usuario: String): UsuarioEntity?
+    /** RF-03: login — solo usuarios ACTIVOS. Admite correo, DNI o usuario. */
+    @Query("SELECT * FROM usuarios WHERE (correo=:identificador OR dni=:identificador OR usuario=:identificador) AND estado='ACTIVO' LIMIT 1")
+    suspend fun buscarActivoPorIdentificador(identificador: String): UsuarioEntity?
+
+    @Query("SELECT * FROM usuarios WHERE correo=:correo LIMIT 1")
+    suspend fun buscarPorCorreoGeneral(correo: String): UsuarioEntity?
+
+    @Query("SELECT * FROM usuarios WHERE dni=:dni LIMIT 1")
+    suspend fun buscarPorDniGeneral(dni: String): UsuarioEntity?
+
+
+
 
     @Query("SELECT * FROM usuarios WHERE id_usuario=:id LIMIT 1")
     fun observarPorId(id: Int): Flow<UsuarioEntity?>
+
+    @Query("SELECT * FROM usuarios WHERE id_usuario=:id LIMIT 1")
+    suspend fun buscarPorId(id: Int): UsuarioEntity?
 
     /** RF-02: panel de aprobaciones del Admin. */
     @Query("SELECT * FROM usuarios WHERE estado='PENDIENTE' ORDER BY created_at ASC")
@@ -40,6 +52,9 @@ interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE estado='ACTIVO'")
     suspend fun obtenerActivosLista(): List<UsuarioEntity>
+
+    @Query("SELECT * FROM usuarios WHERE rol='ADMINISTRADOR' LIMIT 1")
+    suspend fun obtenerAdmin(): UsuarioEntity?
 
     /** Pendientes de subir a Firebase. */
     @Query("SELECT * FROM usuarios WHERE firebase_uid IS NULL OR sync_version > 1")
@@ -193,6 +208,12 @@ interface ChatDao {
 
     @Query("SELECT COUNT(*) FROM mensajes_privados WHERE id_receptor=:id AND leido=0")
     fun observarNoLeidos(id: Int): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM mensajes_privados WHERE created_at=:ts AND id_emisor=:emisor AND id_receptor=:receptor")
+    suspend fun contarMensajePrivado(ts: Long, emisor: Int, receptor: Int): Int
+
+    @Query("SELECT COUNT(*) FROM mensajes_grupales WHERE created_at=:ts AND id_usuario=:usuario")
+    suspend fun contarMensajeGrupal(ts: Long, usuario: Int): Int
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -216,6 +237,12 @@ interface IncidenciaDao {
 
     @Query("SELECT * FROM incidencias WHERE id_incidencia=:id LIMIT 1")
     fun observarPorId(id: Int): Flow<IncidenciaEntity?>
+
+    @Query("SELECT * FROM incidencias WHERE sync_pendiente = 1")
+    suspend fun obtenerPendientesSync(): List<IncidenciaEntity>
+
+    @Query("UPDATE incidencias SET sync_pendiente = 0 WHERE id_incidencia = :id")
+    suspend fun marcarComoSincronizada(id: Int)
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -226,6 +253,14 @@ interface FinancieroDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertarCargo(c: CargoFinancieroEntity): Long
+
+    /** Firestore sync: devuelve 1 si ya existe el cargo con ese id_cargo remoto. */
+    @Query("SELECT COUNT(*) FROM cargos_financieros WHERE id_cargo=:id")
+    suspend fun contarCargoPorId(id: Int): Int
+
+    /** Firestore sync: deduplicación por timestamp+concepto para docs sin id numérico. */
+    @Query("SELECT COUNT(*) FROM cargos_financieros WHERE created_at=:ts AND concepto=:concepto")
+    suspend fun contarCargoPorTimestamp(ts: Long, concepto: String): Int
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertarTransaccion(t: TransaccionEntity): Long

@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
+import com.upn.app_vecinoalerta.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NuevoAvisoBottomSheet : BottomSheetDialogFragment() {
+class NuevoAvisoDialog : DialogFragment() {
 
     private val viewModel: MuralViewModel by viewModels({ requireParentFragment() })
 
@@ -20,64 +21,37 @@ class NuevoAvisoBottomSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val context = requireContext()
-        val layout = android.widget.LinearLayout(context).apply {
-            orientation = android.widget.LinearLayout.VERTICAL
-            setPadding(48, 32, 48, 48)
-            setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
-        }
+    ): View? {
+        val view = inflater.inflate(R.layout.dialog_nuevo_aviso, container, false)
 
-        val etTitulo = EditText(context).apply {
-            hint = "Título del aviso"
-            setHintTextColor(android.graphics.Color.GRAY)
-            setTextColor(android.graphics.Color.WHITE)
-            layoutParams = android.widget.LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { it.bottomMargin = 24 }
-        }
-
-        val etContenido = EditText(context).apply {
-            hint = "Contenido del aviso..."
-            setHintTextColor(android.graphics.Color.GRAY)
-            setTextColor(android.graphics.Color.WHITE)
-            minLines = 3
-            layoutParams = android.widget.LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { it.bottomMargin = 32 }
-        }
-
-        val btnPublicar = Button(context).apply {
-            text = "Publicar Aviso"
-            setTextColor(android.graphics.Color.WHITE)
-            setBackgroundColor(android.graphics.Color.parseColor("#6366F1"))
-            layoutParams = android.widget.LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        }
-
-        layout.addView(etTitulo)
-        layout.addView(etContenido)
-        layout.addView(btnPublicar)
+        val etTitulo = view.findViewById<EditText>(R.id.etTitulo)
+        val etContenido = view.findViewById<EditText>(R.id.etContenido)
+        val btnPublicar = view.findViewById<MaterialButton>(R.id.btnPublicar)
 
         btnPublicar.setOnClickListener {
-            val titulo = etTitulo.text.toString()
-            val contenido = etContenido.text.toString()
-            val sesion = requireActivity().getSharedPreferences("sesion", 0)
-            val idAdmin = sesion.getInt("id_usuario", -1)
+            val titulo = etTitulo.text.toString().trim()
+            val contenido = etContenido.text.toString().trim()
+            val idAdmin = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
 
             if (titulo.isNotBlank() && contenido.isNotBlank()) {
                 viewModel.publicar(titulo, contenido, idAdmin)
-                Toast.makeText(context, "Aviso publicado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Aviso publicado con éxito", Toast.LENGTH_SHORT).show()
                 dismiss()
             } else {
                 Toast.makeText(context, "Completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
 
-        return layout
+        return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        
+        // Agregar márgenes al diálogo
+        val displayMetrics = resources.displayMetrics
+        val width = (displayMetrics.widthPixels * 0.9).toInt() // 90% of screen width
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

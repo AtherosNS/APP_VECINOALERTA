@@ -70,8 +70,7 @@ class NuevaIncidenciaFragment : Fragment() {
         binding.btnGaleria.setOnClickListener { elegirGaleria.launch("image/*") }
 
         binding.btnEnviar.setOnClickListener {
-            val sesion   = requireActivity().getSharedPreferences("sesion", 0)
-            val idUsuario = sesion.getInt("id_usuario", -1)
+            val idUsuario = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
             val categoria = when (binding.rgCategoria.checkedRadioButtonId) {
                 binding.rbSeguridad.id      -> "SEGURIDAD"
                 binding.rbLimpieza.id       -> "LIMPIEZA"

@@ -27,6 +27,11 @@ class AdminHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Saludo dinámico
+        val nombreCompleto = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(requireContext(), "nombre", "Admin") ?: "Admin"
+        val primerNombre = nombreCompleto.split(" ").firstOrNull() ?: "Admin"
+        binding.tvGreeting.text = "Hola, $primerNombre 👋"
+
         binding.cardAprobaciones.setOnClickListener {
             findNavController().navigate(R.id.dest_aprobaciones)
         }
@@ -51,13 +56,29 @@ class AdminHomeFragment : Fragment() {
             findNavController().navigate(R.id.dest_encuestas)
         }
 
-        binding.cardCerrarSesion.setOnClickListener {
-            cerrarSesion()
+
+        binding.ivAvatar.setOnClickListener {
+            val dialogView = layoutInflater.inflate(com.upn.app_vecinoalerta.R.layout.dialog_menu_perfil, null)
+            val dialog = android.app.AlertDialog.Builder(requireContext(), com.upn.app_vecinoalerta.R.style.Theme_VecinoAlerta_Dialog)
+                .setView(dialogView)
+                .create()
+
+            dialogView.findViewById<android.view.View>(com.upn.app_vecinoalerta.R.id.optionPerfil).setOnClickListener {
+                dialog.dismiss()
+                findNavController().navigate(com.upn.app_vecinoalerta.R.id.dest_perfil)
+            }
+
+            dialogView.findViewById<android.view.View>(com.upn.app_vecinoalerta.R.id.optionSalir).setOnClickListener {
+                dialog.dismiss()
+                cerrarSesion()
+            }
+
+            dialog.show()
         }
     }
 
     private fun cerrarSesion() {
-        requireActivity().getSharedPreferences("sesion", 0).edit().clear().apply()
+        com.upn.app_vecinoalerta.utils.SecurePrefs.limpiarSesion(requireContext())
         val intent = android.content.Intent(requireContext(), com.upn.app_vecinoalerta.ui.auth.LoginActivity::class.java).apply {
             flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
         }

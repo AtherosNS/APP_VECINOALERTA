@@ -24,6 +24,8 @@ class InmuebleRepository @Inject constructor(
 
     suspend fun obtenerTodosLista(): List<InmuebleEntity> = dao.obtenerTodosLista()
 
+    suspend fun obtenerPorId(id: Int): InmuebleEntity? = dao.obtenerPorId(id)
+
     suspend fun actualizarEstado(inmueble: InmuebleEntity, nuevoEstado: String) =
         dao.actualizar(inmueble.copy(estado = nuevoEstado, updatedAt = System.currentTimeMillis(), syncVersion = inmueble.syncVersion + 1))
-}
+}

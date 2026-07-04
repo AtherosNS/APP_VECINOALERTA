@@ -38,8 +38,7 @@ class AsambleasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion = requireActivity().getSharedPreferences("sesion", 0)
-        val rol = sesion.getString("rol", "") ?: ""
+        val rol = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(requireContext(), "rol", "") ?: ""
 
         if (rol == "ADMINISTRADOR") {
             binding.fabNuevaAsamblea.visibility = View.VISIBLE
@@ -75,28 +74,36 @@ class AsambleasFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val density = parent.context.resources.displayMetrics.density
+            val margin12 = (12 * density).toInt()
+            val padding24 = (24 * density).toInt()
+            val padding20 = (20 * density).toInt()
+
             val layout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.VERTICAL
-                layoutParams = ViewGroup.LayoutParams(
+                layoutParams = androidx.recyclerview.widget.RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                setPadding(32, 16, 32, 16)
+                ).apply {
+                    setMargins(0, margin12, 0, margin12)
+                }
+                setPadding(padding24, padding20, padding24, padding20)
+                setBackgroundResource(R.drawable.bg_card_white)
             }
             val t1 = TextView(parent.context).apply {
                 id = android.R.id.text1
-                setTextColor(android.graphics.Color.WHITE)
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 textSize = 16f
                 setTypeface(null, android.graphics.Typeface.BOLD)
             }
             val t2 = TextView(parent.context).apply {
                 id = android.R.id.text2
-                setTextColor(android.graphics.Color.GRAY)
-                textSize = 14f
+                setTextColor(android.graphics.Color.parseColor("#6B7280"))
+                textSize = 13f
                 layoutParams = android.widget.LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                ).also { it.topMargin = 8 }
+                ).also { it.topMargin = (6 * density).toInt() }
             }
             layout.addView(t1)
             layout.addView(t2)

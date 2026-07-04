@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Curva geométrica fluida de color principal -->
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M0,100 C 30,100 50,80 60,50 C 70,20 90,0 100,0 L0,0 Z" />
+</vector>

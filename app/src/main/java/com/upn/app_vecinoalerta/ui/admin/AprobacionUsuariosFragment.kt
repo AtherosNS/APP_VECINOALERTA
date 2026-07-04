@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.upn.app_vecinoalerta.R
 import com.upn.app_vecinoalerta.data.local.entities.UsuarioEntity
 import com.upn.app_vecinoalerta.databinding.FragmentAprobacionUsuariosBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,45 +73,63 @@ class AprobacionUsuariosFragment : Fragment() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvNombre: TextView = view.findViewById(android.R.id.text1)
             val tvDetalle: TextView = view.findViewById(android.R.id.text2)
-            val btnAprobar: Button = Button(view.context).apply {
+            val btnAprobar: Button = com.google.android.material.button.MaterialButton(view.context).apply {
                 text = "Aprobar"
                 setBackgroundColor(android.graphics.Color.parseColor("#10B981"))
                 setTextColor(android.graphics.Color.WHITE)
+                textSize = 12f
+                minimumHeight = 0
+                minimumWidth = 0
+                setPadding(24, 12, 24, 12)
+                (this as? com.google.android.material.button.MaterialButton)?.cornerRadius = 16
             }
-            val btnRechazar: Button = Button(view.context).apply {
+            val btnRechazar: Button = com.google.android.material.button.MaterialButton(view.context).apply {
                 text = "Rechazar"
                 setBackgroundColor(android.graphics.Color.parseColor("#EF4444"))
                 setTextColor(android.graphics.Color.WHITE)
+                textSize = 12f
+                minimumHeight = 0
+                minimumWidth = 0
+                setPadding(24, 12, 24, 12)
+                (this as? com.google.android.material.button.MaterialButton)?.cornerRadius = 16
             }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val density = parent.context.resources.displayMetrics.density
+            val margin12 = (12 * density).toInt()
+            val padding16 = (16 * density).toInt()
+
             val layout = android.widget.LinearLayout(parent.context).apply {
-                orientation = android.widget.LinearLayout.HORIZONTAL
-                layoutParams = ViewGroup.LayoutParams(
+                orientation = android.widget.LinearLayout.VERTICAL
+                layoutParams = androidx.recyclerview.widget.RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                setPaddingRelative(32, 16, 32, 16)
+                ).apply {
+                    setMargins(0, margin12, 0, margin12)
+                }
+                setPadding(padding16, padding16, padding16, padding16)
+                setBackgroundResource(R.drawable.bg_card_white)
             }
+
             val textLayout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.VERTICAL
                 layoutParams = android.widget.LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1.0f
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             }
             val t1 = TextView(parent.context).apply {
                 id = android.R.id.text1
-                setTextColor(android.graphics.Color.WHITE)
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 textSize = 16f
                 setTypeface(null, android.graphics.Typeface.BOLD)
             }
             val t2 = TextView(parent.context).apply {
                 id = android.R.id.text2
-                setTextColor(android.graphics.Color.GRAY)
-                textSize = 14f
+                setTextColor(android.graphics.Color.parseColor("#6B7280"))
+                textSize = 13f
+                setLineSpacing(2f, 1f)
             }
             textLayout.addView(t1)
             textLayout.addView(t2)
@@ -120,23 +139,26 @@ class AprobacionUsuariosFragment : Fragment() {
             
             val buttonLayout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.HORIZONTAL
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                gravity = android.view.Gravity.END
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                ).apply {
+                    topMargin = (12 * density).toInt()
+                }
             }
             
             val btnParams = android.widget.LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                (36 * density).toInt()
             ).apply {
-                setMargins(8, 0, 0, 0)
+                setMargins((8 * density).toInt(), 0, 0, 0)
             }
             holder.btnAprobar.layoutParams = btnParams
             holder.btnRechazar.layoutParams = btnParams
             
-            buttonLayout.addView(holder.btnAprobar)
             buttonLayout.addView(holder.btnRechazar)
+            buttonLayout.addView(holder.btnAprobar)
             layout.addView(buttonLayout)
             
             return holder

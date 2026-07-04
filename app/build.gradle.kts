@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
-    // Firebase — descomentar cuando agregues google-services.json
-    // alias(libs.plugins.google.services)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -12,11 +11,12 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.upn.app_vecinoalerta"
+        applicationId = "com.tuempresa.interfacedesign"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,8 +39,9 @@ android {
         }
         debug {
             isDebuggable = true
-            applicationIdSuffix = ".debug"
+            // applicationIdSuffix = ".debug"
         }
+
     }
 
     compileOptions {
@@ -96,15 +97,20 @@ dependencies {
     // RNF-03: nunca almacenamos texto plano
     implementation(libs.jbcrypt)
 
+    // ── Seguridad: EncryptedSharedPreferences (sesión segura) ─
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
     // ── Glide (carga de imágenes para evidencia incidencias)
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
     // ── Firebase (fase 2 — sincronización cloud) ──────────
-    // Descomentar cuando tengas google-services.json
-    // implementation(platform(libs.firebase.bom))
-    // implementation(libs.firebase.firestore.ktx)
-    // implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth.ktx)
+
+    // ── Flutter Module ────────────────────────────────────
+    implementation(project(":flutter"))
 
     // ── Tests ─────────────────────────────────────────────
     testImplementation(libs.junit)

@@ -3,6 +3,7 @@ package com.upn.app_vecinoalerta.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -10,7 +11,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.upn.app_vecinoalerta.R
 import com.upn.app_vecinoalerta.databinding.ActivityMainDashboardBinding
 import com.upn.app_vecinoalerta.ui.panico.PanicoActivity
+import com.upn.app_vecinoalerta.utils.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Dashboard principal para PROPIETARIO y RESIDENTE.
@@ -32,8 +36,7 @@ class MainDashboardActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        val sesion = getSharedPreferences("sesion", MODE_PRIVATE)
-        val rol = sesion.getString("rol", "RESIDENTE") ?: "RESIDENTE"
+        val rol = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(this, "rol", "RESIDENTE") ?: "RESIDENTE"
         val graphResId = if (rol == "PROPIETARIO") {
             R.navigation.nav_propietario
         } else {
@@ -67,6 +70,26 @@ class MainDashboardActivity : AppCompatActivity() {
         // RF-05/RNF-01: FAB de pánico — 1 tap desde cualquier pantalla
         binding.fabPanico.setOnClickListener {
             startActivity(Intent(this, PanicoActivity::class.java))
+        }
+
+        // Observar conectividad
+        lifecycleScope.launch {
+            NetworkUtils.observeConnectivity(this@MainDashboardActivity)
+                .collect { isOnline ->
+                    val banner = binding.tvConnectionBanner
+                    if (isOnline) {
+                        // Mostrar brevemente "Conectado" en verde y ocultar
+                        banner.text = "🟢  Conectado"
+                        banner.setBackgroundColor(android.graphics.Color.parseColor("#16A34A"))
+                        banner.visibility = android.view.View.VISIBLE
+                        delay(2000)
+                        banner.visibility = android.view.View.GONE
+                    } else {
+                        banner.text = "🔴  Sin conexión — Modo local activo"
+                        banner.setBackgroundColor(android.graphics.Color.parseColor("#DC2626"))
+                        banner.visibility = android.view.View.VISIBLE
+                    }
+                }
         }
     }
 

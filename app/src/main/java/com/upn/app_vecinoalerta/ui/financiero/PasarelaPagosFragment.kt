@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.upn.app_vecinoalerta.R
 import com.upn.app_vecinoalerta.databinding.FragmentPasarelaPagosBinding
 import com.upn.app_vecinoalerta.utils.CurrencyFormatter
+import com.upn.app_vecinoalerta.utils.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,8 +37,7 @@ class PasarelaPagosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion     = requireActivity().getSharedPreferences("sesion", 0)
-        val idUsuario  = sesion.getInt("id_usuario", -1)
+        val idUsuario  = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
         val idCargo    = arguments?.getInt("idCargo", -1) ?: -1
         val monto      = arguments?.getString("monto")?.toDoubleOrNull() ?: 0.0
 
@@ -55,6 +55,14 @@ class PasarelaPagosFragment : Fragment() {
         }
 
         binding.btnConfirmarPago.setOnClickListener {
+            if (!NetworkUtils.isOnline(requireContext())) {
+                androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("⚠️ Sin conexión a internet")
+                    .setMessage("La pasarela de pagos requiere conexión a internet activa.\n\nConéctate a WiFi o datos móviles e intenta nuevamente.")
+                    .setPositiveButton("Entendido", null)
+                    .show()
+                return@setOnClickListener
+            }
             mostrarSimulacionPago(idCargo, idUsuario, metodoPagoSeleccionado, monto)
         }
 
@@ -88,17 +96,17 @@ class PasarelaPagosFragment : Fragment() {
 
     private fun mostrarSimulacionPago(idCargo: Int, idUsuario: Int, metodo: String, monto: Double) {
         val context = requireContext()
-        val builder = androidx.appcompat.app.AlertDialog.Builder(context, R.style.Theme_VecinoAlerta)
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context, R.style.Theme_VecinoAlerta_Dialog)
         
         val container = android.widget.LinearLayout(context).apply {
             orientation = android.widget.LinearLayout.VERTICAL
             setPadding(48, 32, 48, 32)
-            setBackgroundColor(android.graphics.Color.parseColor("#1A1F2C"))
+            setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
         }
 
         val title = android.widget.TextView(context).apply {
             text = "Simulación Pasarela: $metodo"
-            setTextColor(android.graphics.Color.WHITE)
+            setTextColor(android.graphics.Color.parseColor("#1F2937"))
             textSize = 18f
             setTypeface(null, android.graphics.Typeface.BOLD)
             setPadding(0, 0, 0, 24)
@@ -108,10 +116,10 @@ class PasarelaPagosFragment : Fragment() {
         if (metodo == "VISA" || metodo == "MASTERCARD") {
             val etCard = android.widget.EditText(context).apply {
                 hint = "Número de Tarjeta (16 dígitos)"
-                setHintTextColor(android.graphics.Color.parseColor("#94A3B8"))
-                setTextColor(android.graphics.Color.WHITE)
+                setHintTextColor(android.graphics.Color.parseColor("#9CA3AF"))
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_input_field)
                 setPadding(24, 24, 24, 24)
             }
             container.addView(etCard)
@@ -126,10 +134,10 @@ class PasarelaPagosFragment : Fragment() {
 
             val etVence = android.widget.EditText(context).apply {
                 hint = "MM/YY"
-                setHintTextColor(android.graphics.Color.parseColor("#94A3B8"))
-                setTextColor(android.graphics.Color.WHITE)
+                setHintTextColor(android.graphics.Color.parseColor("#9CA3AF"))
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 inputType = android.text.InputType.TYPE_CLASS_DATETIME or android.text.InputType.TYPE_DATETIME_VARIATION_DATE
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_input_field)
                 setPadding(24, 24, 24, 24)
                 layoutParams = android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f).also {
                     it.marginEnd = 8
@@ -137,10 +145,10 @@ class PasarelaPagosFragment : Fragment() {
             }
             val etCvv = android.widget.EditText(context).apply {
                 hint = "CVV"
-                setHintTextColor(android.graphics.Color.parseColor("#94A3B8"))
-                setTextColor(android.graphics.Color.WHITE)
+                setHintTextColor(android.graphics.Color.parseColor("#9CA3AF"))
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_input_field)
                 setPadding(24, 24, 24, 24)
                 layoutParams = android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f).also {
                     it.marginStart = 8
@@ -152,10 +160,10 @@ class PasarelaPagosFragment : Fragment() {
 
             val etName = android.widget.EditText(context).apply {
                 hint = "Nombre del Titular"
-                setHintTextColor(android.graphics.Color.parseColor("#94A3B8"))
-                setTextColor(android.graphics.Color.WHITE)
+                setHintTextColor(android.graphics.Color.parseColor("#9CA3AF"))
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_input_field)
                 setPadding(24, 24, 24, 24)
                 layoutParams = android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
@@ -187,19 +195,19 @@ class PasarelaPagosFragment : Fragment() {
         } else {
             val info = android.widget.TextView(context).apply {
                 text = "Realiza la transferencia al número 987-654-321.\n\nIngresa tu número de celular registrado:"
-                setTextColor(android.graphics.Color.parseColor("#94A3B8"))
+                setTextColor(android.graphics.Color.parseColor("#6B7280"))
                 textSize = 14f
                 setPadding(0, 0, 0, 16)
             }
             container.addView(info)
 
             val qrMock = android.widget.TextView(context).apply {
-                text = "[ Escanear Código QR VecinoAlerta ]"
-                setTextColor(android.graphics.Color.parseColor("#10B981"))
+                text = "📱 Escanear Código QR VecinoAlerta"
+                setTextColor(android.graphics.Color.parseColor("#16A34A"))
                 textSize = 15f
                 setPadding(24, 24, 24, 24)
                 gravity = android.view.Gravity.CENTER
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_card_white)
                 layoutParams = android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                     android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
@@ -209,10 +217,10 @@ class PasarelaPagosFragment : Fragment() {
 
             val etCelular = android.widget.EditText(context).apply {
                 hint = "Celular (9 dígitos)"
-                setHintTextColor(android.graphics.Color.parseColor("#94A3B8"))
-                setTextColor(android.graphics.Color.WHITE)
+                setHintTextColor(android.graphics.Color.parseColor("#9CA3AF"))
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                setBackgroundColor(android.graphics.Color.parseColor("#242B3D"))
+                setBackgroundResource(R.drawable.bg_input_field)
                 setPadding(24, 24, 24, 24)
             }
             container.addView(etCelular)
@@ -238,23 +246,23 @@ class PasarelaPagosFragment : Fragment() {
 
     private fun iniciarProcesamientoSimulado(idCargo: Int, idUsuario: Int, metodo: String, monto: Double) {
         val context = requireContext()
-        val progressDialog = androidx.appcompat.app.AlertDialog.Builder(context, R.style.Theme_VecinoAlerta)
+        val progressDialog = androidx.appcompat.app.AlertDialog.Builder(context, R.style.Theme_VecinoAlerta_Dialog)
             .setCancelable(false)
             .create()
 
         val layout = android.widget.LinearLayout(context).apply {
             orientation = android.widget.LinearLayout.VERTICAL
             setPadding(48, 48, 48, 48)
-            setBackgroundColor(android.graphics.Color.parseColor("#1A1F2C"))
+            setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
             gravity = android.view.Gravity.CENTER
         }
 
         val progress = android.widget.ProgressBar(context).apply {
-            indeterminateTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#6366F1"))
+            indeterminateTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#D97706"))
         }
         val status = android.widget.TextView(context).apply {
             text = "Conectando con la pasarela..."
-            setTextColor(android.graphics.Color.WHITE)
+            setTextColor(android.graphics.Color.parseColor("#1F2937"))
             textSize = 16f
             setPadding(0, 24, 0, 0)
             gravity = android.view.Gravity.CENTER

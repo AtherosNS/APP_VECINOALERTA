@@ -9,15 +9,16 @@
         android:icon="@drawable/ic_chat"
         android:title="Chat" />
     <item
-        android:id="@+id/dest_nueva_incidencia"
-        android:icon="@drawable/ic_reportar"
-        android:title="Reportar" />
+        android:id="@+id/dest_encuestas"
+        android:icon="@drawable/ic_encuestas"
+        android:title="Encuestas" />
     <item
         android:id="@+id/dest_estado_cuenta"
         android:icon="@drawable/ic_finanzas"
         android:title="Finanzas" />
     <item
-        android:id="@+id/dest_encuestas"
-        android:icon="@drawable/ic_encuestas"
-        android:title="Encuestas" />
+        android:id="@+id/dest_asambleas"
+        android:icon="@drawable/ic_asambleas"
+        android:title="Asambleas" />
 </menu>
+

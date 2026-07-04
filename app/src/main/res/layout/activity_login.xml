@@ -1,144 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1F1A16"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:background="#F9FAFB">
 
-    <LinearLayout
-        android:id="@+id/llHeader"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginTop="60dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VecinoAlerta"
-            android:textColor="#FFFFFF"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium" />
+        <!-- Bloque de color superior (Estilo minimalista premium) -->
+        <View
+            android:id="@+id/headerBlock"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="#D97706"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Seguridad y Gestión Comunitaria"
-            android:textColor="#C4B5A8"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="#2C241E"
-        app:cardElevation="8dp"
-        app:strokeWidth="0dp"
-        app:layout_constraintTop_toBottomOf="@id/llHeader">
-
+        <!-- Título grande y subtítulo sobre el header block -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="28dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/formCard">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Iniciar Sesión"
+                android:text="Iniciar sesión"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="24dp" />
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Ingresa para acceder a las alertas y reportes de tu comunidad."
+                android:textColor="#FEE2E2"
+                android:textSize="15sp"
+                android:lineSpacingExtra="3dp" />
+        </LinearLayout>
+
+        <!-- Tarjeta de formulario flotante blanca con bordes súper redondeados -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/formCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="10dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:layout_constraintTop_toBottomOf="@id/headerBlock"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre de usuario"
-                android:textColorHint="#C4B5A8"
-                app:hintTextColor="#D97706"
-                app:boxStrokeColor="#D97706"
-                app:boxBackgroundColor="#1F1A16"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <!-- Campo Correo o DNI -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="Correo electrónico o DNI"
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
                     android:id="@+id/etUsuario"
                     android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="correo@ejemplo.com o DNI"
+                    android:textColor="#1F2937"
+                    android:textColorHint="#9CA3AF"
+                    android:textSize="15sp"
+                    android:paddingHorizontal="16dp"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+                <!-- Campo Contraseña -->
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="Contraseña"
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña"
-                android:textColorHint="#C4B5A8"
-                app:hintTextColor="#D97706"
-                app:boxStrokeColor="#D97706"
-                app:boxBackgroundColor="#1F1A16"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="#C4B5A8"
-                android:layout_marginBottom="24dp">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="••••••••"
+                    android:textColor="#1F2937"
+                    android:textColorHint="#9CA3AF"
+                    android:textSize="15sp"
+                    android:paddingHorizontal="16dp"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+
+                <!-- Fila Recordarme + Olvidé contraseña -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="16dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Ingresar"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                app:backgroundTint="#D97706"
-                app:cornerRadius="12dp" />
+                    <CheckBox
+                        android:id="@+id/cbRecordarme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recordarme"
+                        android:textColor="#4B5563"
+                        android:textSize="14sp"
+                        android:buttonTint="#D97706"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true" />
 
-            <TextView
-                android:id="@+id/tvRegistro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="¿No tienes cuenta? Regístrate aquí"
-                android:textColor="#FCD34D"
-                android:textSize="14sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:padding="8dp" />
+                    <TextView
+                        android:id="@+id/tvOlvidePassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Olvidaste tu contraseña?"
+                        android:textColor="#D97706"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="6dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:indeterminateTint="#D97706"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+                <!-- Botón Ingresar -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <android.widget.Button
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_btn_primary"
+                        android:text="Ingresar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="false" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:indeterminateTint="#FFFFFF" />
+
+                </FrameLayout>
+
+                <!-- Separador visual -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#E5E7EB" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" o "
+                        android:textColor="#9CA3AF"
+                        android:textSize="14sp"
+                        android:layout_marginHorizontal="12dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#E5E7EB" />
+                </LinearLayout>
+
+                <!-- Botón Continuar con Google -->
+                <android.widget.Button
+                    android:id="@+id/btnGoogle"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_btn_secondary"
+                    android:text="Continuar con Google"
+                    android:textColor="#374151"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:drawableStart="@android:drawable/ic_menu_search"
+                    android:drawablePadding="-20dp"
+                    android:paddingStart="20dp" />
+
+                <!-- Enlace de registro -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿No tienes una cuenta? "
+                        android:textColor="#4B5563"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvRegistro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Regístrate"
+                        android:textColor="#D97706"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

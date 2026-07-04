@@ -37,22 +37,39 @@
 
         <!-- ── Activities ──────────────────────────────────── -->
 
-        <!-- Punto de entrada: Login -->
+        <!-- Punto de entrada: Splash Screen -->
         <activity
-            android:name=".ui.auth.LoginActivity"
+            android:name=".ui.auth.SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.VecinoAlerta"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Pantalla de Bienvenida -->
+        <activity
+            android:name=".ui.auth.BienvenidaActivity"
+            android:exported="false"
+            android:theme="@style/Theme.VecinoAlerta"
+            android:screenOrientation="portrait" />
+
+        <!-- Login -->
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" />
+
         <!-- RF-01: Registro de nuevos moradores -->
         <activity
             android:name=".ui.auth.RegistroActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" />
+
 
         <!-- Dashboard PROPIETARIO / RESIDENTE (Navigation Component) -->
         <activity
@@ -81,6 +98,13 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- Flutter Activity integration -->
+        <activity
+            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
-</manifest>
+</manifest>

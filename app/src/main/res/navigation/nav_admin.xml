@@ -103,5 +103,11 @@
         android:label="Reglamento"
         tools:layout="@layout/fragment_reglamento" />
 
+    <fragment
+        android:id="@+id/dest_perfil"
+        android:name="com.upn.app_vecinoalerta.ui.profile.PerfilFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/fragment_perfil" />
+
 </navigation>
 

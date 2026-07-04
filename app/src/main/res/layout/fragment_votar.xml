@@ -4,29 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1F1A16"
-    android:padding="20dp">
+    android:background="#F9FAFB"
+    android:padding="24dp">
 
+    <!-- Pregunta -->
     <TextView
         android:id="@+id/tvPregunta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cargando pregunta de la encuesta..."
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textColor="#1E293B"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:letterSpacing="-0.01"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
+    <!-- RadioGroup de Opciones para Votar -->
     <RadioGroup
         android:id="@+id/rgOpciones"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/tvPregunta"
         app:layout_constraintBottom_toTopOf="@id/btnVotar" />
 
+    <!-- Botón Emitir Voto -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVotar"
         android:layout_width="match_parent"
@@ -35,11 +39,13 @@
         android:textSize="16sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+        android:textAllCaps="false"
         app:backgroundTint="#D97706"
-        app:cornerRadius="12dp"
-        android:layout_marginBottom="24dp"
+        app:cornerRadius="28dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <!-- Mensaje de ya votado -->
     <TextView
         android:id="@+id/tvYaVoto"
         android:layout_width="match_parent"
@@ -47,11 +53,12 @@
         android:layout_marginTop="20dp"
         android:text="Ya has participado en esta encuesta. Resultados actuales:"
         android:textColor="#10B981"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/tvPregunta" />
 
+    <!-- Contenedor de Resultados (Gráficos) -->
     <LinearLayout
         android:id="@+id/layoutResultados"
         android:layout_width="match_parent"

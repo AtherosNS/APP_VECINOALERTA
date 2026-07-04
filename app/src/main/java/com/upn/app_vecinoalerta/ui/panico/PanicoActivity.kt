@@ -48,6 +48,9 @@ class PanicoActivity : AppCompatActivity() {
         binding = ActivityPanicoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // RF-05: botón volver → cierra la pantalla de pánico
+        binding.btnVolver.setOnClickListener { finish() }
+
         // Solicitar permiso CALL_PHONE al abrir la pantalla
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
             != PackageManager.PERMISSION_GRANTED) {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "668565888441",
+    "project_id": "app-seguridad-837b8",
+    "storage_bucket": "app-seguridad-837b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668565888441:android:2e987336be001de8556a68",
+        "android_client_info": {
+          "package_name": "com.tuempresa.interfacedesign"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu7EClxzqxOabUqMav15e0OWwWHxLXhpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,13 +2,17 @@ package com.upn.app_vecinoalerta.ui.admin
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.upn.app_vecinoalerta.R
 import com.upn.app_vecinoalerta.databinding.ActivityDashboardAdminBinding
+import com.upn.app_vecinoalerta.utils.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Dashboard principal para el ADMINISTRADOR.
@@ -49,12 +53,28 @@ class AdminDashboardActivity : AppCompatActivity() {
         }
 
         // Re-selección: si ya estás en ese tab, vuelve al inicio del back-stack
-        binding.bottomNav.setOnItemReselectedListener { item ->
-            if (item.itemId == R.id.dest_admin_home) {
-                // Ya estás en Home, no hacer nada
-            } else {
-                navController.popBackStack(navController.graph.startDestinationId, false)
-            }
+        binding.bottomNav.setOnItemReselectedListener {
+            navController.popBackStack(navController.graph.startDestinationId, false)
+        }
+
+        // Observar conectividad
+        lifecycleScope.launch {
+            NetworkUtils.observeConnectivity(this@AdminDashboardActivity)
+                .collect { isOnline ->
+                    val banner = binding.tvConnectionBanner
+                    if (isOnline) {
+                        // Mostrar brevemente "Conectado" en verde y ocultar
+                        banner.text = "🟢  Conectado"
+                        banner.setBackgroundColor(android.graphics.Color.parseColor("#16A34A"))
+                        banner.visibility = android.view.View.VISIBLE
+                        delay(2000)
+                        banner.visibility = android.view.View.GONE
+                    } else {
+                        banner.text = "🔴  Sin conexión — Modo local activo"
+                        banner.setBackgroundColor(android.graphics.Color.parseColor("#DC2626"))
+                        banner.visibility = android.view.View.VISIBLE
+                    }
+                }
         }
     }
 

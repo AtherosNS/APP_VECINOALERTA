@@ -4,43 +4,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1F1A16"
-    android:padding="16dp">
+    android:background="#F9FAFB"
+    android:padding="24dp">
 
+    <!-- Header -->
     <TextView
         android:id="@+id/tvEncuestasTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votaciones y Encuestas"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:text="Votaciones"
+        android:textColor="#1E293B"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:letterSpacing="-0.02"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
+        android:id="@+id/tvEncuestasSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Participa en las decisiones de tu vecindario"
+        android:textColor="#6B7280"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintTop_toBottomOf="@id/tvEncuestasTitle"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Estado Vacío -->
+    <TextView
         android:id="@+id/tvSinEncuestas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay encuestas activas."
-        android:textColor="#C4B5A8"
-        android:textSize="16sp"
+        android:text="No hay encuestas activas en este momento."
+        android:textColor="#9CA3AF"
+        android:textSize="15sp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEncuestasSubtitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <!-- RecyclerView de Encuestas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEncuestas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvEncuestasTitle"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/tvEncuestasSubtitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <!-- FAB Nueva Encuesta (Admin) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabNuevaEncuesta"
         android:layout_width="wrap_content"
@@ -51,6 +68,7 @@
         android:visibility="gone"
         app:backgroundTint="#D97706"
         app:tint="#FFFFFF"
+        app:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

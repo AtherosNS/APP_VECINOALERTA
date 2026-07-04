@@ -41,8 +41,7 @@ class GestionIndicidenciasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion = requireActivity().getSharedPreferences("sesion", 0)
-        val idAdmin = sesion.getInt("id_usuario", -1)
+        val idAdmin = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
 
         binding.rvIncidencias.layoutManager = LinearLayoutManager(requireContext())
 
@@ -77,42 +76,68 @@ class GestionIndicidenciasFragment : Fragment() {
         class ViewHolder(view: View, val ivFoto: android.widget.ImageView) : RecyclerView.ViewHolder(view) {
             val tvCategoria: TextView = view.findViewById(android.R.id.text1)
             val tvDetalle: TextView = view.findViewById(android.R.id.text2)
-            val btnProceso: Button = Button(view.context).apply { text = "En Proceso" }
-            val btnResuelto: Button = Button(view.context).apply { text = "Resolver" }
+            val btnProceso: Button = com.google.android.material.button.MaterialButton(view.context).apply {
+                text = "En Proceso"
+                setBackgroundColor(android.graphics.Color.parseColor("#D97706"))
+                setTextColor(android.graphics.Color.WHITE)
+                textSize = 11f
+                minimumHeight = 0
+                minimumWidth = 0
+                setPadding(16, 8, 16, 8)
+                (this as? com.google.android.material.button.MaterialButton)?.cornerRadius = 12
+            }
+            val btnResuelto: Button = com.google.android.material.button.MaterialButton(view.context).apply {
+                text = "Resolver"
+                setBackgroundColor(android.graphics.Color.parseColor("#10B981"))
+                setTextColor(android.graphics.Color.WHITE)
+                textSize = 11f
+                minimumHeight = 0
+                minimumWidth = 0
+                setPadding(16, 8, 16, 8)
+                (this as? com.google.android.material.button.MaterialButton)?.cornerRadius = 12
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val density = parent.context.resources.displayMetrics.density
+            val margin12 = (12 * density).toInt()
+            val padding16 = (16 * density).toInt()
+
             val layout = android.widget.LinearLayout(parent.context).apply {
-                orientation = android.widget.LinearLayout.HORIZONTAL
-                layoutParams = ViewGroup.LayoutParams(
+                orientation = android.widget.LinearLayout.VERTICAL
+                layoutParams = androidx.recyclerview.widget.RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                setPaddingRelative(32, 16, 32, 16)
+                ).apply {
+                    setMargins(0, margin12, 0, margin12)
+                }
+                setPadding(padding16, padding16, padding16, padding16)
+                setBackgroundResource(R.drawable.bg_card_white)
             }
+
             val textLayout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.VERTICAL
                 layoutParams = android.widget.LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1.0f
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             }
             val t1 = TextView(parent.context).apply {
                 id = android.R.id.text1
-                setTextColor(android.graphics.Color.WHITE)
+                setTextColor(android.graphics.Color.parseColor("#1F2937"))
                 textSize = 16f
+                setTypeface(null, android.graphics.Typeface.BOLD)
             }
             val t2 = TextView(parent.context).apply {
                 id = android.R.id.text2
-                setTextColor(android.graphics.Color.GRAY)
-                textSize = 14f
+                setTextColor(android.graphics.Color.parseColor("#6B7280"))
+                textSize = 13f
             }
             textLayout.addView(t1)
             textLayout.addView(t2)
 
             val ivFoto = android.widget.ImageView(parent.context).apply {
-                val dp150 = (150 * parent.context.resources.displayMetrics.density).toInt()
+                val dp150 = (150 * density).toInt()
                 layoutParams = android.widget.LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     dp150
@@ -125,10 +150,28 @@ class GestionIndicidenciasFragment : Fragment() {
             textLayout.addView(ivFoto)
             layout.addView(textLayout)
 
-            val buttonsLayout = android.widget.LinearLayout(parent.context).apply {
-                orientation = android.widget.LinearLayout.VERTICAL
-            }
             val holder = ViewHolder(layout, ivFoto)
+
+            val buttonsLayout = android.widget.LinearLayout(parent.context).apply {
+                orientation = android.widget.LinearLayout.HORIZONTAL
+                gravity = android.view.Gravity.END
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = (12 * density).toInt()
+                }
+            }
+
+            val btnParams = android.widget.LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                (34 * density).toInt()
+            ).apply {
+                setMargins((8 * density).toInt(), 0, 0, 0)
+            }
+            holder.btnProceso.layoutParams = btnParams
+            holder.btnResuelto.layoutParams = btnParams
+
             buttonsLayout.addView(holder.btnProceso)
             buttonsLayout.addView(holder.btnResuelto)
             layout.addView(buttonsLayout)

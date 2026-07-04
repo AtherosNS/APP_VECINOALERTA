@@ -1,5 +1,6 @@
 package com.upn.app_vecinoalerta.ui.encuestas
 
+import com.upn.app_vecinoalerta.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +44,7 @@ class VotarFragment : Fragment() {
 
         binding.tvPregunta.text = pregunta
 
-        val sesion = requireActivity().getSharedPreferences("sesion", 0)
-        val idUsuario = sesion.getInt("id_usuario", -1)
+        val idUsuario = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
 
         // Verificar si el usuario ya votó
         viewModel.verificarVoto(idEncuesta, idUsuario)
@@ -71,16 +71,18 @@ class VotarFragment : Fragment() {
                                 resultados.forEach { res ->
                                     val itemLayout = android.widget.LinearLayout(requireContext()).apply {
                                         orientation = android.widget.LinearLayout.VERTICAL
+                                        setPadding(20, 16, 20, 16)
+                                        setBackgroundResource(R.drawable.bg_card_white)
                                         layoutParams = android.widget.LinearLayout.LayoutParams(
                                             android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                                             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-                                        ).also { it.bottomMargin = 24 }
+                                        ).also { it.bottomMargin = 16 }
                                     }
                                     
                                     val tvTexto = android.widget.TextView(requireContext()).apply {
                                         text = res.texto_opcion
-                                        setTextColor(android.graphics.Color.WHITE)
-                                        textSize = 16f
+                                        setTextColor(android.graphics.Color.parseColor("#1F2937"))
+                                        textSize = 15f
                                         setTypeface(null, android.graphics.Typeface.BOLD)
                                     }
                                     itemLayout.addView(tvTexto)
@@ -95,24 +97,24 @@ class VotarFragment : Fragment() {
                                         max = 100
                                         setProgress(porcentaje.toInt())
                                         progressTintList = android.content.res.ColorStateList.valueOf(
-                                            android.graphics.Color.parseColor("#6366F1")
+                                            android.graphics.Color.parseColor("#D97706")
                                         )
                                         progressBackgroundTintList = android.content.res.ColorStateList.valueOf(
-                                            android.graphics.Color.parseColor("#242B3D")
+                                            android.graphics.Color.parseColor("#E5E7EB")
                                         )
                                         layoutParams = android.widget.LinearLayout.LayoutParams(
                                             android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                                             (8 * resources.displayMetrics.density).toInt()
                                         ).also {
                                             it.topMargin = 8
-                                            it.bottomMargin = 4
+                                            it.bottomMargin = 6
                                         }
                                     }
                                     itemLayout.addView(progress)
                                     
                                     val tvStats = android.widget.TextView(requireContext()).apply {
                                         text = "${res.total_votos} votos (${String.format(java.util.Locale.US, "%.1f", porcentaje)}%)"
-                                        setTextColor(android.graphics.Color.parseColor("#94A3B8"))
+                                        setTextColor(android.graphics.Color.parseColor("#6B7280"))
                                         textSize = 13f
                                     }
                                     itemLayout.addView(tvStats)
@@ -138,12 +140,20 @@ class VotarFragment : Fragment() {
                                     val rb = RadioButton(requireContext()).apply {
                                         id = opcion.idOpcion
                                         text = opcion.textoOpcion
-                                        setTextColor(android.graphics.Color.WHITE)
+                                        setTextColor(android.graphics.Color.parseColor("#1F2937"))
                                         buttonTintList = android.content.res.ColorStateList.valueOf(
-                                            android.graphics.Color.parseColor("#6366F1")
+                                            android.graphics.Color.parseColor("#D97706")
                                         )
                                         textSize = 16f
-                                        setPadding(16, 12, 16, 12)
+                                        setPadding(24, 16, 24, 16)
+                                        setBackgroundResource(R.drawable.bg_card_white)
+                                        val params = android.widget.RadioGroup.LayoutParams(
+                                            android.widget.RadioGroup.LayoutParams.MATCH_PARENT,
+                                            android.widget.RadioGroup.LayoutParams.WRAP_CONTENT
+                                        ).apply {
+                                            setMargins(0, 8, 0, 8)
+                                        }
+                                        layoutParams = params
                                     }
                                     binding.rgOpciones.addView(rb)
                                 }

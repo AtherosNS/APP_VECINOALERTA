@@ -4,7 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1F1A16">
+    android:background="#F9FAFB">
+
+
+    <!-- Banner de estado de conexión -->
+    <TextView
+        android:id="@+id/tvConnectionBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🔴  Sin conexión — Modo local activo"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="#DC2626"
+        android:visibility="gone"
+        android:elevation="8dp"
+        android:translationZ="8dp" />
 
     <!-- NavHost Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
@@ -21,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="#2C241E"
+        app:backgroundTint="#FFFFFF"
         app:fabAlignmentMode="end"
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="16dp"
@@ -33,8 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
             android:background="@android:color/transparent"
+            app:elevation="0dp"
             app:itemIconTint="@drawable/selector_nav_icon"
-            app:itemTextColor="#C4B5A8"
+            app:itemTextColor="@drawable/selector_nav_text"
             app:menu="@menu/bottom_menu_residente" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 

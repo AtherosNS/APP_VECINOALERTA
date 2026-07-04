@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Escudo principal de seguridad -->
+    <path
+        android:fillColor="#F97316"
+        android:pathData="M12,2L4,5v7c0,5.25 3.42,10.15 8,11.5 4.58,-1.35 8,-6.25 8,-11.5V5L12,2z" />
+    <!-- Borde interior blanco -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M12,4L6,6.2v5.8c0,4.2 2.7,8.1 6,9.2 3.3,-1.1 6,-5 6,-9.2V6.2L12,4z" />
+    <!-- Casa minimalista en el centro -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,9l-4,3.5V17h3v-3h2v3h3v-4.5z" />
+</vector>

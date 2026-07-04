@@ -41,9 +41,8 @@ class EstadoCuentaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sesion    = requireActivity().getSharedPreferences("sesion", 0)
-        val idUsuario = sesion.getInt("id_usuario", -1)
-        val rol       = sesion.getString("rol", "") ?: ""
+        val idUsuario = com.upn.app_vecinoalerta.utils.SecurePrefs.getInt(requireContext(), "id_usuario", -1)
+        val rol       = com.upn.app_vecinoalerta.utils.SecurePrefs.getString(requireContext(), "rol", "") ?: ""
 
         binding.rvCargos.layoutManager = LinearLayoutManager(requireContext())
 
@@ -116,22 +115,44 @@ class EstadoCuentaFragment : Fragment() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvConcepto: TextView = view.findViewById(android.R.id.text1)
             val tvDetalle: TextView = view.findViewById(android.R.id.text2)
-            val btnPagar: Button = Button(view.context).apply {
-                text = "Pagar"
-                setBackgroundColor(android.graphics.Color.parseColor("#D97706"))
-                setTextColor(android.graphics.Color.WHITE)
-            }
+            val btnPagar: TextView = view.findViewById(R.id.btnFechaHora) // Reutilizamos un ID de botón si existiese o usamos tags, pero creamos las referencias correctas
+            val vStatusIndicator: View = view.findViewById(R.id.layoutLugar) // Reutilizamos IDs o creamos la vista dinámica mapeada
+            val layoutBadge: android.widget.LinearLayout = view.findViewById(R.id.layoutTitulo)
+            val tvBadgeText: TextView = view.findViewById(R.id.tvNuevaAsambleaTitle)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val layout = android.widget.LinearLayout(parent.context).apply {
+            val density = parent.context.resources.displayMetrics.density
+            val margin8 = (8 * density).toInt()
+            val padding16 = (16 * density).toInt()
+
+            // Tarjeta principal (LinearLayout Horizontal)
+            val cardLayout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.HORIZONTAL
-                layoutParams = ViewGroup.LayoutParams(
+                layoutParams = ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                setPaddingRelative(32, 16, 32, 16)
+                ).apply {
+                    setMargins(margin8, margin8, margin8, margin8)
+                }
+                setPadding(padding16, padding16, padding16, padding16)
+                setBackgroundResource(R.drawable.bg_card_white)
+                gravity = android.view.Gravity.CENTER_VERTICAL
             }
+
+            // 1. Barra indicadora de estado vertical (a la izquierda)
+            val statusIndicator = View(parent.context).apply {
+                id = R.id.layoutLugar // mapeado para el ViewHolder
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    (4 * density).toInt(),
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                ).also {
+                    it.marginEnd = (12 * density).toInt()
+                }
+            }
+            cardLayout.addView(statusIndicator)
+
+            // 2. Layout de texto (Vertical)
             val textLayout = android.widget.LinearLayout(parent.context).apply {
                 orientation = android.widget.LinearLayout.VERTICAL
                 layoutParams = android.widget.LinearLayout.LayoutParams(
@@ -140,40 +161,106 @@ class EstadoCuentaFragment : Fragment() {
                     1.0f
                 )
             }
-            val t1 = TextView(parent.context).apply {
+
+            val tvConcepto = TextView(parent.context).apply {
                 id = android.R.id.text1
-                setTextColor(android.graphics.Color.WHITE)
-                textSize = 16f
+                setTextColor(android.graphics.Color.parseColor("#1F2937")) // Texto principal oscuro
+                textSize = 15f
                 setTypeface(null, android.graphics.Typeface.BOLD)
             }
-            val t2 = TextView(parent.context).apply {
+            val tvDetalle = TextView(parent.context).apply {
                 id = android.R.id.text2
-                setTextColor(android.graphics.Color.GRAY)
-                textSize = 14f
+                setTextColor(android.graphics.Color.parseColor("#6B7280")) // Texto secundario gris
+                textSize = 13f
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).also { it.topMargin = (4 * density).toInt() }
             }
-            textLayout.addView(t1)
-            textLayout.addView(t2)
-            layout.addView(textLayout)
+            textLayout.addView(tvConcepto)
+            textLayout.addView(tvDetalle)
+            cardLayout.addView(textLayout)
 
-            val holder = ViewHolder(layout)
-            holder.btnPagar.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            layout.addView(holder.btnPagar)
-            return holder
+            // 3. Área de acción derecha (Contenedor para Botón Pagar o Badge Pagado)
+            val actionContainer = android.widget.LinearLayout(parent.context).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).also {
+                    it.marginStart = (12 * density).toInt()
+                }
+                gravity = android.view.Gravity.CENTER
+            }
+
+            // Botón de Pagar
+            val btnPagar = TextView(parent.context).apply {
+                id = R.id.btnFechaHora // mapeado para el ViewHolder
+                text = "Pagar"
+                setTextColor(android.graphics.Color.WHITE)
+                textSize = 14f
+                setTypeface(null, android.graphics.Typeface.BOLD)
+                gravity = android.view.Gravity.CENTER
+                setPadding((16 * density).toInt(), (8 * density).toInt(), (16 * density).toInt(), (8 * density).toInt())
+                val gd = android.graphics.drawable.GradientDrawable().apply {
+                    setColor(android.graphics.Color.parseColor("#D97706")) // Ámbar
+                    cornerRadius = 16 * density
+                }
+                background = gd
+                isClickable = true
+                isFocusable = true
+            }
+
+            // Badge de Pagado (Pill verde)
+            val badgeLayout = android.widget.LinearLayout(parent.context).apply {
+                id = R.id.layoutTitulo // mapeado para el ViewHolder
+                orientation = android.widget.LinearLayout.HORIZONTAL
+                setPadding((10 * density).toInt(), (4 * density).toInt(), (10 * density).toInt(), (4 * density).toInt())
+                val gd = android.graphics.drawable.GradientDrawable().apply {
+                    setColor(android.graphics.Color.parseColor("#D1FAE5")) // Verde menta suave
+                    cornerRadius = 12 * density
+                }
+                background = gd
+                gravity = android.view.Gravity.CENTER
+            }
+            val tvBadgeText = TextView(parent.context).apply {
+                id = R.id.tvNuevaAsambleaTitle // mapeado para el ViewHolder
+                text = "PAGADO"
+                setTextColor(android.graphics.Color.parseColor("#065F46")) // Verde bosque oscuro
+                textSize = 11f
+                setTypeface(null, android.graphics.Typeface.BOLD)
+            }
+            badgeLayout.addView(tvBadgeText)
+
+            actionContainer.addView(btnPagar)
+            actionContainer.addView(badgeLayout)
+            cardLayout.addView(actionContainer)
+
+            return ViewHolder(cardLayout)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = list[position]
             holder.tvConcepto.text = item.concepto
-            val statusText = if (item.estadoPago == "PAGADO") "PAGADO" else "PENDIENTE"
-            holder.tvDetalle.text = "Mes: ${item.mes}/${item.anio} - Monto: ${CurrencyFormatter.formatear(item.monto)}\nEstado: $statusText"
-            
+
+            // Traducir número de mes a español
+            val meses = arrayOf(
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            )
+            val mesStr = if (item.mes in 1..12) meses[item.mes - 1] else "Mes ${item.mes}"
+            holder.tvDetalle.text = "$mesStr ${item.anio} • ${CurrencyFormatter.formatear(item.monto)}"
+
             if (item.estadoPago == "PAGADO") {
+                // Estado PAGADO:
+                holder.vStatusIndicator.setBackgroundColor(android.graphics.Color.parseColor("#22C55E")) // Barra lateral verde
                 holder.btnPagar.visibility = View.GONE
+                holder.layoutBadge.visibility = View.VISIBLE
             } else {
+                // Estado PENDIENTE:
+                holder.vStatusIndicator.setBackgroundColor(android.graphics.Color.parseColor("#F97316")) // Barra lateral naranja/ámbar
                 holder.btnPagar.visibility = View.VISIBLE
+                holder.layoutBadge.visibility = View.GONE
                 holder.btnPagar.setOnClickListener { onPagar(item) }
             }
         }

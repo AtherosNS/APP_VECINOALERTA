@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.upn.app_vecinoalerta.data.local.dao.*
 import com.upn.app_vecinoalerta.data.local.entities.*
@@ -41,9 +42,11 @@ import kotlinx.coroutines.launch
         // Emergencia
         ContactoEmergenciaEntity::class,
     ],
-    version = 3,
+    version = 6,
     exportSchema = true
 )
+
+
 abstract class VecinoAlertaDatabase : RoomDatabase() {
 
     // ── DAOs expuestos ─────────────────────────────────────────────
@@ -69,12 +72,22 @@ abstract class VecinoAlertaDatabase : RoomDatabase() {
                     VecinoAlertaDatabase::class.java,
                     "vecino_alerta.db"
                 )
+                    .addMigrations(MIGRATION_5_6)
                     .addCallback(DatabaseCallback(scope))
                     .fallbackToDestructiveMigration()
                     // RNF-04: WAL mejora el rendimiento de lecturas concurrentes
                     .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
                     .build()
                     .also { INSTANCE = it }
+            }
+        }
+
+        /** Agrega columna sync_pendiente a la tabla incidencias (v5 → v6). */
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE incidencias ADD COLUMN sync_pendiente INTEGER NOT NULL DEFAULT 1"
+                )
             }
         }
     }

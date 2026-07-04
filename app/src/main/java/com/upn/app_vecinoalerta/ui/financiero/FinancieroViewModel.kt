@@ -30,6 +30,11 @@ class FinancieroViewModel @Inject constructor(
     private val repo: FinancieroRepository
 ) : ViewModel() {
 
+    init {
+        // Iniciar sync Firestore→Room de cargos financieros desde el arranque del ViewModel
+        repo.iniciarEscuchadorCargos()
+    }
+
     private val _pagoState = MutableStateFlow<PagoUiState>(PagoUiState.Idle)
     val pagoState: StateFlow<PagoUiState> = _pagoState.asStateFlow()
 
